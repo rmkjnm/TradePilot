@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="row">
+
+    <div class="col-md-4">
+
+        <div class="card shadow">
+
+            <div class="card-body">
+
+                <h5>📈 Market Status</h5>
+
+                <h3 class="text-success">
+
+                    Bullish
+
+                </h3>
+
+                <p>
+
+                    Confidence
+
+                    <strong>0%</strong>
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-4">
+
+        <div class="card shadow">
+
+            <div class="card-body">
+
+                <h5>🧠 Strategy</h5>
+
+                <h3>
+
+                    WAIT
+
+                </h3>
+
+                <p>
+
+                    Score
+
+                    <strong>0</strong>
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-4">
+
+        <div class="card shadow">
+
+            <div class="card-body">
+
+                <h5>⚠ Risk</h5>
+
+                <h3>
+
+                    ₹300
+
+                </h3>
+
+                <p>
+
+                    Daily Loss Limit
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="row mt-4">
+
+    <div class="col">
+
+        <div class="card shadow">
+
+            <div class="card-body">
+
+                <h4>
+
+                    Today's Performance
+
+                </h4>
+
+                <hr>
+
+                <p>
+
+                    Profit :
+                    ₹0
+
+                </p>
+
+                <p>
+
+                    Trades :
+                    0
+
+                </p>
+
+                <p>
+
+                    Win Rate :
+                    --
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="row mt-4">
+
+    <div class="d-grid gap-2">
+
+        <a href="/analysis"
+           class="btn btn-primary">
+
+           New Analysis
+
+           </a>
+
+        <button class="btn btn-success">
+
+            Analyze Trade
+
+        </button>
+
+        <button class="btn btn-warning">
+
+            Trade Journal
+
+        </button>
+
+        <button class="btn btn-dark">
+
+            Statistics
+
+        </button>
+
+    </div>
+
+</div>
+
+{% endblock %}
