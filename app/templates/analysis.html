@@ -4,116 +4,117 @@
 
 <div class="container mt-4">
 
-    <div class="d-flex justify-content-between">
+    <div class="d-flex justify-content-between align-items-center mb-4">
 
         <div>
+            <h2>Analysis #{{ analysis.id }}</h2>
 
-            <h2>
+            <span class="badge bg-primary">
+                {{ analysis.status }}
+            </span>
+        </div>
 
-                Analysis #{{ analysis.id }}
-
-            </h2>
-
-            <p>
-
-                Status:
-                <strong>{{ analysis.status }}</strong>
-
-            </p>
-
+        <div>
+            <a href="{{ url_for('dashboard') }}"
+               class="btn btn-secondary">
+                Dashboard
+            </a>
         </div>
 
     </div>
 
-    <hr>
+    <div class="row">
 
-    <div class="card mb-4">
+        {% set upload_types = [
+            ("NIFTY Chart", "nifty_chart"),
+            ("Option Chart", "option_chart"),
+            ("Option Chain", "option_chain"),
+            ("Open Interest", "open_interest"),
+            ("Market Depth", "market_depth")
+        ] %}
 
-        <div class="card-body">
+        {% for title, key in upload_types %}
 
-            <h5>📈 NIFTY Chart</h5>
+        <div class="col-lg-6 mb-4">
 
-            <p>No image uploaded.</p>
+            <div class="card shadow-sm">
 
-            <button class="btn btn-outline-primary">
+                <div class="card-header">
+                    <strong>{{ title }}</strong>
+                </div>
 
-                Upload
+                <div class="card-body">
 
-            </button>
+                    {% if images.get(key) %}
+
+                        <div class="alert alert-success">
+
+                            ✅ Uploaded
+
+                            <br><br>
+
+                            <strong>
+                                {{ images[key].original_filename }}
+                            </strong>
+
+                        </div>
+
+                    {% else %}
+
+                        <div class="alert alert-warning">
+
+                            No image uploaded.
+
+                        </div>
+
+                    {% endif %}
+
+                    <form
+                        action="{{ url_for('analysis.upload_image', analysis_id=analysis.id) }}"
+                        method="POST"
+                        enctype="multipart/form-data">
+
+                        <input
+                            type="hidden"
+                            name="image_type"
+                            value="{{ key }}">
+
+                        <input
+                            class="form-control"
+                            type="file"
+                            name="image"
+                            accept="image/*"
+                            required>
+
+                        <button
+                            class="btn btn-primary mt-3 w-100">
+
+                            Upload {{ title }}
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
 
         </div>
+
+        {% endfor %}
 
     </div>
 
-    <div class="card mb-4">
+    <div class="text-end mt-4">
 
-        <div class="card-body">
+        <button
+            class="btn btn-success btn-lg"
+            disabled>
 
-            <h5>📊 Option Chart</h5>
+            Analyze Trade
+            <small>(Coming Soon)</small>
 
-            <p>No image uploaded.</p>
-
-            <button class="btn btn-outline-primary">
-
-                Upload
-
-            </button>
-
-        </div>
-
-    </div>
-
-    <div class="card mb-4">
-
-        <div class="card-body">
-
-            <h5>📉 Option Chain</h5>
-
-            <p>No image uploaded.</p>
-
-            <button class="btn btn-outline-primary">
-
-                Upload
-
-            </button>
-
-        </div>
-
-    </div>
-
-    <div class="card mb-4">
-
-        <div class="card-body">
-
-            <h5>📋 Open Interest</h5>
-
-            <p>No image uploaded.</p>
-
-            <button class="btn btn-outline-primary">
-
-                Upload
-
-            </button>
-
-        </div>
-
-    </div>
-
-    <div class="card mb-4">
-
-        <div class="card-body">
-
-            <h5>📦 Market Depth</h5>
-
-            <p>No image uploaded.</p>
-
-            <button class="btn btn-outline-primary">
-
-                Upload
-
-            </button>
-
-        </div>
+        </button>
 
     </div>
 
