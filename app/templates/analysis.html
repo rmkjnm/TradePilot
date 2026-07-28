@@ -46,60 +46,47 @@
                 <div class="card-body">
 
                     {% if images.get(key) %}
+                    {% if images.get(key) %}
 
-                        <div class="alert alert-success">
+<div class="text-center">
 
-                            ✅ Uploaded
+    <img
+        src="{{ url_for('analysis.uploaded_file',
+        filename=images[key].file_path) }}"
+        class="img-fluid rounded border mb-3"
+        style="max-height:250px;">
 
-                            <br><br>
+    <p>
+        <strong>{{ images[key].original_filename }}</strong>
+    </p>
 
-                            <strong>
-                                {{ images[key].original_filename }}
-                            </strong>
+    <small class="text-muted">
+        Uploaded
+        {{ images[key].uploaded_at.strftime('%d %b %Y %H:%M') }}
+    </small>
 
-                        </div>
+    <div class="mt-3">
 
-                    {% else %}
+                      
 
-                        <div class="alert alert-warning">
+                      <form
+            action="{{ url_for('analysis.delete_image',
+                analysis_id=analysis.id,
+                image_type=key) }}"
+            method="POST">
 
-                            No image uploaded.
+            <button
+                class="btn btn-outline-danger btn-sm">
 
-                        </div>
+                Delete
 
-                    {% endif %}
+            </button>
 
-                    <form
-                        action="{{ url_for('analysis.upload_image', analysis_id=analysis.id) }}"
-                        method="POST"
-                        enctype="multipart/form-data">
+        </form>
 
-                        <input
-                            type="hidden"
-                            name="image_type"
-                            value="{{ key }}">
+    </div>
 
-                        <input
-                            class="form-control"
-                            type="file"
-                            name="image"
-                            accept="image/*"
-                            required>
-
-                        <button
-                            class="btn btn-primary mt-3 w-100">
-
-                            Upload {{ title }}
-
-                        </button>
-
-                    </form>
-
-                </div>
-
-            </div>
-
-        </div>
+</div>
 
         {% endfor %}
 

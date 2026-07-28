@@ -10,13 +10,48 @@ from app.extensions import db
 from app.models.analysis import Analysis
 from app.models.image import AnalysisImage
 from app.services.upload_service import UploadService
+from flask import send_from_directory
+import os
 
 analysis_bp = Blueprint(
     "analysis",
     __name__
 )
 
+@analysis_bp.route("/uploads/<path:filename>")
+def uploaded_file(filename):
+    return send_from_directory(
+        UploadService.UPLOAD_FOLDER,
+        filename
+    )
+@analysis_bp.route(
+    "/analysis/<int:analysis_id>/delete/<image_type>",
+    methods=["POST"]
+)
+def delete_image(analysis_id, image_type):
 
+    image = AnalysisImage.query.filter_by(
+        analysis_id=analysis_id,
+        image_type=image_type
+    ).first_or_404()
+
+    file_path = os.path.join(
+        UploadService.UPLOAD_FOLDER,
+        image.file_path
+    )
+
+    if os.path.exists(file_path):
+        os.remove(file_path)
+
+    db.session.delete(image)
+    db.session.commit()
+
+    return redirect(
+        url_for(
+            "analysis.workspace",
+            analysis_id=analysis_id
+        )
+    )
 # ----------------------------------------------------
 # Create New Analysis
 # ----------------------------------------------------
