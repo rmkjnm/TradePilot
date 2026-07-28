@@ -1,16 +1,22 @@
 from datetime import datetime
-from app import db
+from app.extensions import db
 
 
 class Analysis(db.Model):
-
     __tablename__ = "analysis"
 
     id = db.Column(db.Integer, primary_key=True)
 
     title = db.Column(
         db.String(100),
+        nullable=False,
         default="New Analysis"
+    )
+
+    status = db.Column(
+        db.String(30),
+        nullable=False,
+        default="Draft"
     )
 
     created_at = db.Column(
@@ -18,11 +24,18 @@ class Analysis(db.Model):
         default=datetime.utcnow
     )
 
-    status = db.Column(
-        db.String(20),
-        default="Draft"
+    updated_at = db.Column(
+        db.DateTime,
+        default=datetime.utcnow,
+        onupdate=datetime.utcnow
     )
 
-    edge_score = db.Column(db.Integer)
+    images = db.relationship(
+        "AnalysisImage",
+        backref="analysis",
+        lazy=True,
+        cascade="all, delete-orphan"
+    )
 
-    recommendation = db.Column(db.String(50))
+    def __repr__(self):
+        return f"<Analysis {self.id}>"

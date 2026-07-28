@@ -2,42 +2,118 @@
 
 {% block content %}
 
-<div class="card shadow">
+<div class="container mt-4">
 
-    <div class="card-body">
+    <div class="d-flex justify-content-between">
 
-        <h2>
+        <div>
 
-            New Trade Analysis
+            <h2>
 
-        </h2>
+                Analysis #{{ analysis.id }}
 
-        <hr>
+            </h2>
 
-        <form>
+            <p>
 
-            <div class="mb-3">
+                Status:
+                <strong>{{ analysis.status }}</strong>
 
-                <label class="form-label">
+            </p>
 
-                    Upload Screenshots
+        </div>
 
-                </label>
+    </div>
 
-                <input
-                    class="form-control"
-                    type="file"
-                    multiple>
+    <hr>
 
-            </div>
+    <div class="card mb-4">
 
-            <button class="btn btn-primary">
+        <div class="card-body">
+
+            <h5>📈 NIFTY Chart</h5>
+
+            <p>No image uploaded.</p>
+
+            <button class="btn btn-outline-primary">
 
                 Upload
 
             </button>
 
-        </form>
+        </div>
+
+    </div>
+
+    <div class="card mb-4">
+
+        <div class="card-body">
+
+            <h5>📊 Option Chart</h5>
+
+            <p>No image uploaded.</p>
+
+            <button class="btn btn-outline-primary">
+
+                Upload
+
+            </button>
+
+        </div>
+
+    </div>
+
+    <div class="card mb-4">
+
+        <div class="card-body">
+
+            <h5>📉 Option Chain</h5>
+
+            <p>No image uploaded.</p>
+
+            <button class="btn btn-outline-primary">
+
+                Upload
+
+            </button>
+
+        </div>
+
+    </div>
+
+    <div class="card mb-4">
+
+        <div class="card-body">
+
+            <h5>📋 Open Interest</h5>
+
+            <p>No image uploaded.</p>
+
+            <button class="btn btn-outline-primary">
+
+                Upload
+
+            </button>
+
+        </div>
+
+    </div>
+
+    <div class="card mb-4">
+
+        <div class="card-body">
+
+            <h5>📦 Market Depth</h5>
+
+            <p>No image uploaded.</p>
+
+            <button class="btn btn-outline-primary">
+
+                Upload
+
+            </button>
+
+        </div>
 
     </div>
 
