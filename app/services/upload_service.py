@@ -2,21 +2,26 @@ import os
 from werkzeug.utils import secure_filename
 
 
-UPLOAD_FOLDER = "uploads"
+class UploadService:
 
+    UPLOAD_FOLDER = "uploads"
 
-def save_file(file):
+    @staticmethod
+    def save(file, analysis_id, image_type):
 
-    if file.filename == "":
-        return None
+        folder = os.path.join(
+            UploadService.UPLOAD_FOLDER,
+            f"analysis_{analysis_id}"
+        )
 
-    filename = secure_filename(file.filename)
+        os.makedirs(folder, exist_ok=True)
 
-    filepath = os.path.join(
-        UPLOAD_FOLDER,
-        filename
-    )
+        extension = file.filename.rsplit(".", 1)[1].lower()
 
-    file.save(filepath)
+        filename = f"{image_type}.{extension}"
 
-    return filepath
+        filepath = os.path.join(folder, filename)
+
+        file.save(filepath)
+
+        return filepath

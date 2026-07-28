@@ -29,4 +29,4 @@ class AnalysisImage(db.Model):
     )
 
     def __repr__(self):
-        return f"<Image {self.filename}>"
+        return f"<AnalysisImage {self.id}>"

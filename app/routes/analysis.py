@@ -1,7 +1,15 @@
-from flask import Blueprint, render_template, redirect, url_for
+from flask import (
+    Blueprint,
+    render_template,
+    redirect,
+    url_for,
+    request,
+)
 
 from app.extensions import db
 from app.models.analysis import Analysis
+from app.models.image import AnalysisImage
+from app.services.upload_service import UploadService
 
 analysis_bp = Blueprint(
     "analysis",
@@ -9,13 +17,15 @@ analysis_bp = Blueprint(
 )
 
 
+# ----------------------------------------------------
+# Create New Analysis
+# ----------------------------------------------------
 @analysis_bp.route("/new-analysis")
 def new_analysis():
 
     analysis = Analysis()
 
     db.session.add(analysis)
-
     db.session.commit()
 
     return redirect(
@@ -26,14 +36,81 @@ def new_analysis():
     )
 
 
+# ----------------------------------------------------
+# Analysis Workspace
+# ----------------------------------------------------
 @analysis_bp.route("/analysis/<int:analysis_id>")
 def workspace(analysis_id):
 
-    analysis = Analysis.query.get_or_404(
-        analysis_id
-    )
+    analysis = Analysis.query.get_or_404(analysis_id)
+
+    images = {
+        image.image_type: image
+        for image in analysis.images
+    }
 
     return render_template(
         "analysis.html",
-        analysis=analysis
+        analysis=analysis,
+        images=images
+    )
+
+
+# ----------------------------------------------------
+# Upload Image
+# ----------------------------------------------------
+@analysis_bp.route(
+    "/analysis/<int:analysis_id>/upload",
+    methods=["POST"]
+)
+def upload_image(analysis_id):
+
+    analysis = Analysis.query.get_or_404(analysis_id)
+
+    image = request.files.get("image")
+
+    if image is None or image.filename == "":
+        return redirect(
+            url_for(
+                "analysis.workspace",
+                analysis_id=analysis.id
+            )
+        )
+
+    image_type = request.form.get("image_type")
+
+    filepath = UploadService.save(
+        file=image,
+        analysis_id=analysis.id,
+        image_type=image_type
+    )
+
+    existing_image = AnalysisImage.query.filter_by(
+        analysis_id=analysis.id,
+        image_type=image_type
+    ).first()
+
+    if existing_image:
+
+        existing_image.file_path = filepath
+        existing_image.original_filename = image.filename
+
+    else:
+
+        new_image = AnalysisImage(
+            analysis_id=analysis.id,
+            image_type=image_type,
+            file_path=filepath,
+            original_filename=image.filename
+        )
+
+        db.session.add(new_image)
+
+    db.session.commit()
+
+    return redirect(
+        url_for(
+            "analysis.workspace",
+            analysis_id=analysis.id
+        )
     )
