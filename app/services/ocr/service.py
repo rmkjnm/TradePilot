@@ -28,4 +28,4 @@ class OCRService:
                 "bbox": box
             })
 
-        return output
+        return snapshot

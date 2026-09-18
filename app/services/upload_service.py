@@ -1,7 +1,12 @@
 import os
 from werkzeug.utils import secure_filename
 
+from app.services.ocr.serializer import snapshot_to_json
 
+json_output = snapshot_to_json(snapshot)
+
+with open("uploads/latest_analysis.json", "w") as file:
+    file.write(json_output)
 class UploadService:
 
     UPLOAD_FOLDER = "uploads"
